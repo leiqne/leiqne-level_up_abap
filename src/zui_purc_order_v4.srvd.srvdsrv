@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service definition PO'
+define service ZUI_PURC_ORDER_V4 {
+  expose ZEGUI_C_PURC_ORDER as PurchaseOrder;
+  expose ZEGUI_C_PO_ITM     as PurchaseOrderItem;
+}

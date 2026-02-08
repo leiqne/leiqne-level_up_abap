@@ -1,0 +1,48 @@
+@Metadata.layer: #CORE
+annotate entity ZEGUI_C_PURC_ORDER with
+{
+  @UI.facet: [
+      { id: 'idIdentification', type: #IDENTIFICATION_REFERENCE, label: 'Order Details', position: 10 },
+      { id:'idItemms', type: #LINEITEM_REFERENCE, label: 'Order Items', position:20, targetElement:'_Items' }
+  ]
+
+  @UI.identification: [{ position:10 }]
+  PoId;
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position:20 }]
+  @UI.selectionField: [{ position: 15 }]
+  DeliveryDate;
+  @UI.lineItem: [{ position: 10 }]
+  @UI.identification: [{ position:10 }]
+  @UI.selectionField: [{ position: 10 }]
+  OrderDate;
+
+  @UI.lineItem: [{ position: 30 },
+  {
+      type: #FOR_ACTION,
+      dataAction: 'ChangeStatus',
+      label: 'Cancel PO',
+      position: 60
+    }]
+  @UI.identification: [{ position:30 }]
+  @UI.selectionField: [{ position: 20 }]
+  Status;
+
+  @UI.hidden: true
+  CurrencyCode;
+
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position:50 }]
+  TotalPrice;
+
+  @UI.identification: [{ position: 80 }]
+  @UI.lineItem: [{ position: 40 }]
+  BuyerFullName;
+
+  @UI.identification: [{ position: 70 }]
+  @Consumption.valueHelpDefinition: [
+      { entity: { name: 'ZEGUI_C_BUYER', element: 'BuyerId' } }
+  ]
+  BuyerId;
+
+}

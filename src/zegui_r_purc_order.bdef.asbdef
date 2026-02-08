@@ -1,0 +1,68 @@
+managed implementation in class zbp_egui_r_purc_order unique;
+strict ( 2 );
+with draft;
+
+
+define behavior for ZEGUI_R_PURC_ORDER //alias <alias_name>
+persistent table zegui_purc_order
+draft table zegui_purc_d
+lock master total etag OrderDate
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  field ( readonly, numbering : managed ) PoId;
+  field ( mandatory: create ) OrderDate, DeliveryDate, BuyerId;
+
+  association _Items {create; with draft; }
+
+
+  //validations
+  validation checkDates on save { field OrderDate, DeliveryDate;  }
+  //determinations
+  determination SetInitialStatus on modify { create; }
+  //actions
+  action ChangeStatus result [1] $self;
+
+  mapping for zegui_purc_order {
+    PoId=po_id;
+    DeliveryDate = deliverydate;
+    OrderDate= orderdate;
+    Status= status;
+    CurrencyCode= currencycode;
+    BuyerId      = buyer_id;
+  }
+}
+
+define behavior for ZEGUI_R_PO_ITEM
+    persistent table zegui_po_item
+    draft table zegui_poitm_d
+    lock dependent by _Header
+    authorization dependent by _Header
+{
+    update;
+    delete;
+
+    field(readonly, numbering:managed) PoItemId;
+    field(readonly) PoId;
+
+    association _Header{with draft;}
+
+    mapping for zegui_po_item{
+        PoItemId=po_item_id;
+        PoId=po_id;
+        Productname=productname;
+       Quantity =quantity;
+        Currencycode=currencycode;
+       Unitprice =unitprice;
+    }
+}

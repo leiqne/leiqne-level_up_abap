@@ -1,0 +1,13 @@
+@Metadata.layer: #CORE
+annotate entity ZEGUI_C_BUYER
+    with 
+{
+    @UI.hidden: true
+    BuyerId;
+    @UI.lineItem: [ { position: 10 } ]
+    @UI.selectionField: [ { position: 10 } ]
+    FullName;
+    @UI.lineItem: [ { position: 20 } ]
+    Email;
+    
+}
