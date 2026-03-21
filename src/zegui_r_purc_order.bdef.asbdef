@@ -1,15 +1,17 @@
 managed implementation in class zbp_egui_r_purc_order unique;
 strict ( 2 );
 with draft;
+extensible;
 
 
 define behavior for ZEGUI_R_PURC_ORDER //alias <alias_name>
 persistent table zegui_purc_order
 draft table zegui_purc_d
 lock master total etag OrderDate
+late numbering
 authorization master ( instance )
 //etag master <field_name>
-{
+extensible {
   create ( authorization : global );
   update;
   delete;
@@ -20,9 +22,8 @@ authorization master ( instance )
   draft action Resume;
   draft determine action Prepare;
 
-  field ( readonly, numbering : managed ) PoId;
-  field ( mandatory: create ) OrderDate, DeliveryDate, BuyerId;
-
+  field ( readonly) PoId;
+  field ( mandatory: create ) OrderDate, DeliveryDate, BuyerId, Status;
   association _Items {create; with draft; }
 
 
@@ -31,9 +32,13 @@ authorization master ( instance )
   //determinations
   determination SetInitialStatus on modify { create; }
   //actions
-  action ChangeStatus result [1] $self;
+  action ( features: instance, authorization: update )ChangeStatus parameter ZEGUI_A_CHANGESTATUS result [1] $self;
 
-  mapping for zegui_purc_order {
+    //events
+    event orderCreated parameter zegui_a_purc_order;
+
+
+  mapping for zegui_purc_order corresponding extensible {
     PoId=po_id;
     DeliveryDate = deliverydate;
     OrderDate= orderdate;
@@ -47,22 +52,25 @@ define behavior for ZEGUI_R_PO_ITEM
     persistent table zegui_po_item
     draft table zegui_poitm_d
     lock dependent by _Header
+    late numbering
     authorization dependent by _Header
-{
+extensible {
     update;
     delete;
-
-    field(readonly, numbering:managed) PoItemId;
-    field(readonly) PoId;
+    field (readonly) PoItemId;
+    field (readonly) PoId;
 
     association _Header{with draft;}
 
-    mapping for zegui_po_item{
-        PoItemId=po_item_id;
-        PoId=po_id;
-        Productname=productname;
-       Quantity =quantity;
-        Currencycode=currencycode;
-       Unitprice =unitprice;
+    //determinations
+    determination SetDefaultCurrencyCode on save { create; }
+
+    mapping for zegui_po_item corresponding extensible{
+        PoItemId = po_item_id;
+        PoId = po_id;
+        Productname = productname;
+       Quantity = quantity;
+        Currencycode = currencycode;
+       Unitprice = unitprice;
     }
 }

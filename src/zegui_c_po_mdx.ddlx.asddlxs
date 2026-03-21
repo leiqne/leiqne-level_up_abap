@@ -6,13 +6,15 @@ annotate entity ZEGUI_C_PURC_ORDER with
       { id:'idItemms', type: #LINEITEM_REFERENCE, label: 'Order Items', position:20, targetElement:'_Items' }
   ]
 
-  @UI.identification: [{ position:10 }]
+  @UI.lineItem: [{ position:5 }]
+  @UI.selectionField: [{ position: 5 }]
+   @UI.identification: [{ position: 5 }]
   PoId;
   @UI.lineItem: [{ position: 20 }]
   @UI.identification: [{ position:20 }]
   @UI.selectionField: [{ position: 15 }]
   DeliveryDate;
-  @UI.lineItem: [{ position: 10 }]
+  @UI.lineItem: [{ position: 10 }]  
   @UI.identification: [{ position:10 }]
   @UI.selectionField: [{ position: 10 }]
   OrderDate;
@@ -21,12 +23,18 @@ annotate entity ZEGUI_C_PURC_ORDER with
   {
       type: #FOR_ACTION,
       dataAction: 'ChangeStatus',
-      label: 'Cancel PO',
+      label: 'Change Status',
       position: 60
     }]
   @UI.identification: [{ position:30 }]
   @UI.selectionField: [{ position: 20 }]
-  Status;
+  @Consumption.valueHelpDefinition: [{
+  entity: {
+    name: 'ZEGUI_I_STATUS_VH',
+    element: 'Status'
+  }
+}]
+Status;
 
   @UI.hidden: true
   CurrencyCode;

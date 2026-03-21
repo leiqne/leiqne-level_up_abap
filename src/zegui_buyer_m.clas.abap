@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zegui_buyer_m IMPLEMENTATION.
+CLASS ZEGUI_BUYER_M IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
@@ -23,8 +23,8 @@ CLASS zegui_buyer_m IMPLEMENTATION.
       CATCH cx_uuid_error.
         "handle exception
     ENDTRY.
-    t_buyer-full_name = 'WOLKSWAGEN'.
-    t_buyer-email = 'WOLKSWAGEN@WOLKSWAGEN.com'.
+    t_buyer-full_name = 'OPEL'.
+    t_buyer-email = 'OPEL@OPEL.com'.
     SELECT SINGLE full_name
     FROM zegui_buyer
     WHERE full_name = @t_buyer-full_name

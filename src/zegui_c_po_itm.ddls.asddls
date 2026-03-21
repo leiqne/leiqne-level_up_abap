@@ -8,7 +8,7 @@ as projection on ZEGUI_R_PO_ITEM
     key PoItemId,
     
     @UI.hidden: true
-    PoId,
+    key PoId,
     @UI.lineItem: [{ position: 10 }]
     @UI.identification: [{ position: 10 }]
     

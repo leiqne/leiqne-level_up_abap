@@ -18,5 +18,6 @@ on $projection.BuyerId = _Buyer.BuyerId
     BuyerId
     
     /* Associations */
-    ,_Items,_Total, _Buyer
+    ,_Items
+    ,_Total, _Buyer
 }

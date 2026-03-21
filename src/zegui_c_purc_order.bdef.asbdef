@@ -2,7 +2,9 @@ projection;
 strict ( 2 );
 use draft;
 
+
 define behavior for ZEGUI_C_PURC_ORDER //alias <alias_name>
+
 {
   use create;
   use update;

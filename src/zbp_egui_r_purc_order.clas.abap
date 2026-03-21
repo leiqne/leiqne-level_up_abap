@@ -1,5 +1,9 @@
 CLASS zbp_egui_r_purc_order DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zegui_r_purc_order.
+protected section.
+private section.
 ENDCLASS.
 
-CLASS zbp_egui_r_purc_order IMPLEMENTATION.
+
+
+CLASS ZBP_EGUI_R_PURC_ORDER IMPLEMENTATION.
 ENDCLASS.

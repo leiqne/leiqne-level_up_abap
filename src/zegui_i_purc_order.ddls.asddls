@@ -11,7 +11,8 @@ on $projection.BuyerId =_Buyer.BuyerId
     orderdate as OrderDate,
     status as Status,
     currencycode as CurrencyCode
-    ,_Items,
+    ,_Items
+    ,
 
     buyer_id as BuyerId,
     _Buyer
