@@ -12,7 +12,7 @@ as projection on ZEGUI_R_PURC_ORDER
     DeliveryDate,
     Status,
     CurrencyCode,
-    
+    Summary,
     _Total.TotalPrice as TotalPrice,
     BuyerId,
     _Buyer.FullName as BuyerFullName

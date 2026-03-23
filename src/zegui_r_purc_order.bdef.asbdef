@@ -7,6 +7,7 @@ extensible;
 define behavior for ZEGUI_R_PURC_ORDER //alias <alias_name>
 persistent table zegui_purc_order
 draft table zegui_purc_d
+with additional save
 lock master total etag OrderDate
 late numbering
 authorization master ( instance )
@@ -22,7 +23,7 @@ extensible {
   draft action Resume;
   draft determine action Prepare;
 
-  field ( readonly) PoId;
+  field ( readonly) PoId, Summary;
   field ( mandatory: create ) OrderDate, DeliveryDate, BuyerId, Status;
   association _Items {create; with draft; }
 
@@ -36,6 +37,8 @@ extensible {
 
     //events
     event orderCreated parameter zegui_a_purc_order;
+    //its the same with my timestamp
+    side effects { field llm_status affects field Summary;  }
 
 
   mapping for zegui_purc_order corresponding extensible {

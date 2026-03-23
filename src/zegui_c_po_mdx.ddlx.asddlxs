@@ -52,5 +52,9 @@ Status;
       { entity: { name: 'ZEGUI_C_BUYER', element: 'BuyerId' } }
   ]
   BuyerId;
+  
+  @UI.identification: [ { position : 90 } ]
+  @EndUserText.label: 'Summary'
+  Summary;
 
 }

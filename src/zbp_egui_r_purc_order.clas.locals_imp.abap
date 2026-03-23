@@ -3,7 +3,7 @@ CLASS lsc_zegui_r_purc_order DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
 
     METHODS adjust_numbers REDEFINITION.
-
+    methods save_modified redeFINITION.
 ENDCLASS.
 
 CLASS lsc_zegui_r_purc_order IMPLEMENTATION.
@@ -14,9 +14,38 @@ CLASS lsc_zegui_r_purc_order IMPLEMENTATION.
     FROM zegui_purc_order
     INTO @DATA(lv_max).
 
-    LOOP AT mapped-zegui_r_purc_order REFERENCE INTO DATA(map).
-      map->PoId = lv_max + 1.
+    LOOP AT mapped-zegui_r_purc_order ASSIGNING FIELD-SYMBOL(<order>).
+      IF <order>-poid IS INITIAL.
+        <order>-PoId = lv_max + 1.
+      ENDIF.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD save_modified.
+
+    if create-zegui_r_purc_order is not initial.
+    LOOP AT create-zegui_r_purc_order ASSIGNING FIELD-SYMBOL(<ls_key>).
+      UPDATE zegui_gem_resp SET status = 'PROCESSING' WHERE poid = @<ls_key>-PoId.
+      IF sy-subrc <> 0 .
+
+        INSERT zegui_gem_resp FROM @( VALUE #(
+            poid = <ls_key>-PoId
+            status = 'PROCESSING'
+
+         ) ).
+
+      ENDIF.
+
+      TRY.
+          cl_bgmc_process_factory=>get_default(
+          )->create(
+          )->set_operation_tx_uncontrolled( NEW zcl_egui_gem_operation( <ls_key>-poid )
+          )->save_for_execution( ).
+        CATCH cx_bgmc.
+      ENDTRY.
+
+    ENDLOOP.
+    endif.
   ENDMETHOD.
 
 ENDCLASS.
@@ -39,7 +68,6 @@ CLASS lhc_ZEGUI_R_PURC_ORDER DEFINITION INHERITING FROM cl_abap_behavior_handler
       IMPORTING keys REQUEST requested_features FOR zegui_r_purc_order RESULT result.
     METHODS SetDefaultCurrencyCode FOR DETERMINE ON SAVE
       IMPORTING keys FOR zegui_r_po_item~SetDefaultCurrencyCode.
-
     METHODS is_update_allowed RETURNING VALUE(update_allowed) TYPE abap_bool.
 
 ENDCLASS.
@@ -233,5 +261,6 @@ CLASS lhc_ZEGUI_R_PURC_ORDER IMPLEMENTATION.
                       ( %tky = item-%tky
                         currencycode = 'USD' ) ).
   ENDMETHOD.
+
 
 ENDCLASS.
